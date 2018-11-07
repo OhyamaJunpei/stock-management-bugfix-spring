@@ -22,7 +22,7 @@
 			    </th>
 			    <td>
 			    	<form:errors cssStyle="color:red" path="mailAddress" element="div"/>
-			    	<form:input path="mailAddress" placeholder="Email" cssStyle="color:red" element="div"/>
+			    	<form:input path="mailAddress" placeholder="Email"/>
 			    </td>
 			  </tr>
 			  <tr>
