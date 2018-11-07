@@ -72,7 +72,8 @@ public class MemberController {
 			BeanUtils.copyProperties(form, member);
 			memberService.save(member);
 		}else {
-			model.addAttribute("confirmMessage", "メールアドレスが一致しません");
+			//model.addAttribute("confirmMessage", "パスワードが一致しません");
+			result.rejectValue("password", "MemberForm.global.equal" ,"パスワードが一致しません");
 			return form();
 		}
 		
