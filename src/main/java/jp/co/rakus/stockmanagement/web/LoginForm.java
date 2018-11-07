@@ -9,10 +9,10 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class LoginForm {
 	/** メールアドレス */
-	@NotBlank(message = "値を入力してください")
+	@NotBlank(message = "メールアドレスを入力してください")
 	private String mailAddress;
 	/** パスワード */
-	@NotBlank(message = "値を入力してください")
+	@NotBlank(message = "パスワードを入力してください")
 	private String password;
 	public String getMailAddress() {
 		return mailAddress;
