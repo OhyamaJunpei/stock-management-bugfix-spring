@@ -20,6 +20,17 @@ public class MemberForm {
 	/** パスワード */
 	@Size(min=1, max=50, message="パスワードは50文字以内で入力してください")
 	private String password;
+	
+	/** 確認用パスワード */
+	private String confirmPassword;
+	
+	
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
 	public String getName() {
 		return name;
 	}

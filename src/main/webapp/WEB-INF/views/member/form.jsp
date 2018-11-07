@@ -31,8 +31,18 @@
 			     	 パスワード
 			    </th>
 			    <td>
+			    	<c:out value="${confirmMessage}"/><br>
 			    	<form:errors cssStyle="color:red" path="password" element="div"/>
 			    	<form:password path="password" placeholder="Password"/>
+			    </td>
+			  </tr>
+			  <tr>
+			    <th>
+			     	確認用 パスワード
+			    </th>
+			    <td>
+			    	<form:errors cssStyle="color:red" path="confirmPassword" element="div"/>
+			    	<form:password path="confirmPassword" placeholder="Password"/>
 			    </td>
 			  </tr>
 			  <tr>

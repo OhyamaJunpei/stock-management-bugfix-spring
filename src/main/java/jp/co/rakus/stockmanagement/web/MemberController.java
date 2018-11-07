@@ -67,8 +67,13 @@ public class MemberController {
 			return form();
 		}
 		
-		BeanUtils.copyProperties(form, member);
-		memberService.save(member);			
+		if(form.getConfirmPassword().equals(form.getPassword())) {
+			BeanUtils.copyProperties(form, member);
+			memberService.save(member);
+		}else {
+			model.addAttribute("confirmMessage", "メールアドレスが一致しません");
+			return form();
+		}
 		
 		return "redirect:/";
 	}
