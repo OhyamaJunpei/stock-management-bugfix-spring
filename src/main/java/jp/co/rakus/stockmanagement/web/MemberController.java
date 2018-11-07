@@ -63,7 +63,8 @@ public class MemberController {
 		Member member = new Member();
 		
 		if(memberService.findMailAddress(form.getMailAddress()) != null) {
-			model.addAttribute("duplicatedMessage", "そのメールアドレスは既に登録されています");
+			//model.addAttribute("duplicatedMessage", "そのメールアドレスは既に登録されています");
+			result.rejectValue("mailAddress", "MemberForm.global.duplicate", "そのメールアドレスは既に登録されています");
 			return form();
 		}
 		

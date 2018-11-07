@@ -21,7 +21,6 @@
 			      	メールアドレス
 			    </th>
 			    <td>
-			    	<c:out value="${duplicatedMessage}"/><br>
 			    	<form:errors cssStyle="color:red" path="mailAddress" element="div"/>
 			    	<form:input path="mailAddress" placeholder="Email"/>
 			    </td>
