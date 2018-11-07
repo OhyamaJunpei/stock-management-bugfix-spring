@@ -72,5 +72,26 @@ public class MemberRepository {
 		}
 		return member;
 	}
+	
+	
+	/**
+	 * メールアドレスでメンバー情報を検索.
+	 * 
+	 * @param mailAddress メールアドレス
+	 * @return 検索されたメンバー情報
+	 */
+	public Member findMailAddress(String mailAddress) {
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress);
+		Member member = null;
+		try{
+			member = jdbcTemplate.queryForObject("SELECT id,name,mail_address,password FROM members WHERE mail_address= :mailAddress",
+					param, 
+					MEMBER_ROW_MAPPER);
+			return member;
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 }

@@ -33,6 +33,10 @@ public class MemberService {
 		return memberRepository.save(member);
 	}
 	
+	public Member findMailAddress(String mailAddress) {
+		return memberRepository.findMailAddress(mailAddress);
+	}
+	
 //	public Member update(Member member){
 //		return memberRepository.save(member);
 //	}

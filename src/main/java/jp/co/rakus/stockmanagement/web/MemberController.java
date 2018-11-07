@@ -61,8 +61,15 @@ public class MemberController {
 		}
 		
 		Member member = new Member();
+		
+		if(memberService.findMailAddress(form.getMailAddress()) != null) {
+			model.addAttribute("duplicatedMessage", "そのメールアドレスは既に登録されています");
+			return form();
+		}
+		
 		BeanUtils.copyProperties(form, member);
-		memberService.save(member);
+		memberService.save(member);			
+		
 		return "redirect:/";
 	}
 	
