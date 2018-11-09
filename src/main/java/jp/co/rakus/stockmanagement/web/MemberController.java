@@ -56,28 +56,24 @@ public class MemberController {
 			BindingResult result,
 			Model model) {
 		
+		if(memberService.findMailAddress(form.getMailAddress()) != null) {
+			//model.addAttribute("duplicatedMessage", "そのメールアドレスは既に登録されています");
+			result.rejectValue("mailAddress", "MemberForm.global.duplicate", "そのメールアドレスは既に登録されています");
+		}
+		
+		if(form.getConfirmPassword().equals(form.getPassword())) {
+			//model.addAttribute("confirmMessage", "パスワードが一致しません");
+			result.rejectValue("password", "MemberForm.global.equal" ,"パスワードが一致しません");
+		}
+		
 		if(result.hasErrors()) {
 			return form();
 		}
 		
 		Member member = new Member();
-		
-		if(memberService.findMailAddress(form.getMailAddress()) != null) {
-			//model.addAttribute("duplicatedMessage", "そのメールアドレスは既に登録されています");
-			result.rejectValue("mailAddress", "MemberForm.global.duplicate", "そのメールアドレスは既に登録されています");
-			return form();
-		}
-		
-		if(form.getConfirmPassword().equals(form.getPassword())) {
-			BeanUtils.copyProperties(form, member);
-			memberService.save(member);
-		}else {
-			//model.addAttribute("confirmMessage", "パスワードが一致しません");
-			result.rejectValue("password", "MemberForm.global.equal" ,"パスワードが一致しません");
-			return form();
-		}
-		
+		memberService.save(member);
+		BeanUtils.copyProperties(form, member);
+	
 		return "redirect:/";
 	}
-	
 }
