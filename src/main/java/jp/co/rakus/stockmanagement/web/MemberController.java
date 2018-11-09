@@ -58,12 +58,12 @@ public class MemberController {
 		
 		if(memberService.findMailAddress(form.getMailAddress()) != null) {
 			//model.addAttribute("duplicatedMessage", "そのメールアドレスは既に登録されています");
-			result.rejectValue("mailAddress", "MemberForm.global.duplicate", "そのメールアドレスは既に登録されています");
+			result.rejectValue("mailAddress", null, "そのメールアドレスは既に登録されています");
 		}
 		
-		if(form.getConfirmPassword().equals(form.getPassword())) {
+		if(!(form.getConfirmPassword().equals(form.getPassword()))) {
 			//model.addAttribute("confirmMessage", "パスワードが一致しません");
-			result.rejectValue("password", "MemberForm.global.equal" ,"パスワードが一致しません");
+			result.rejectValue("password", null,"パスワードが一致しません");
 		}
 		
 		if(result.hasErrors()) {
