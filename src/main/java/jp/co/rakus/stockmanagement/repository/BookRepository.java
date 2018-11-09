@@ -57,13 +57,47 @@ public class BookRepository {
 	}
 	
 	public Book update(Book book) {
+		String sql = "UPDATE books SET stock=:stock WHERE id=:id";
+		
 		SqlParameterSource param = new BeanPropertySqlParameterSource(book);
+		
 		if (book.getId() == null) {
 			throw new NullPointerException();
 		} 
-		jdbcTemplate.update(
-				"UPDATE books SET stock=:stock WHERE id=:id",
-				param);
+		
+		jdbcTemplate.update(sql, param);
+		return book;
+	}
+	
+	/**
+	 * DBにある最大のidを検索.
+	 * @return 最大のid
+	 */
+	public Integer getMaxId() {
+		String sql = "SELECT MAX(id) FROM books";
+		SqlParameterSource param = new MapSqlParameterSource();
+		
+		try {
+			Integer maxId = jdbcTemplate.queryForObject(sql, param, Integer.class);
+			return maxId;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * 書籍をDBにinsertするメソッド.
+	 * @param book 書籍情報
+	 * @return 書籍情報
+	 */
+	public Book insert(Book book) {
+		String sql = "INSERT INTO books (id, name, author, publisher, price, isbncode, saledate, explanation, image, stock)"
+		                     + " VALUES (:id, :name, :author, :publisher, :price, :isbncode, :saledate, :explanation, :image, :stock)";
+		
+		SqlParameterSource param = new BeanPropertySqlParameterSource(book);
+		
+		jdbcTemplate.update(sql, param);
+		
 		return book;
 	}
 }

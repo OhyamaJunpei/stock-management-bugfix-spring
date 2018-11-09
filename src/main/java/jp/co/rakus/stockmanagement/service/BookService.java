@@ -38,4 +38,22 @@ public class BookService {
 //	public void delete(Integer id){
 //		bookRepository.delete(id);
 //	}
+	
+	/**
+	 * bookのidは自動採番されないため
+	 * 現在DBにあるidに+1したidを作るメソッド.
+	 * @return DBに存在するid+1
+	 */
+	public Integer createId() {
+		Integer maxId = bookRepository.getMaxId();
+		if (maxId == null) {
+			maxId = 1;
+			return maxId;
+		}
+		return maxId + 1;
+	}
+	
+	public Book insert(Book book) {
+		return bookRepository.insert(book);
+	}
 }

@@ -1,10 +1,15 @@
 package jp.co.rakus.stockmanagement.web;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 
 import jp.co.rakus.stockmanagement.domain.Book;
 import jp.co.rakus.stockmanagement.service.BookService;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 書籍関連処理を行うコントローラー.
@@ -28,6 +34,9 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	
+	@Autowired
+	private ServletContext application;
+	
 	/**
 	 * フォームを初期化します.
 	 * @return フォーム
@@ -35,6 +44,11 @@ public class BookController {
 	@ModelAttribute
 	public BookForm setUpForm() {
 		return new BookForm();
+	}
+	
+	@ModelAttribute
+	public RegisterBookForm setUpRegisterBookForm() {
+		return new RegisterBookForm();
 	}
 	
 	/**
@@ -78,6 +92,52 @@ public class BookController {
 		book.setStock(form.getStock());
 		bookService.update(book);
 		return list(model);
+	}
+	
+	@RequestMapping("/form")
+	public String form() {
+		return "/book/regist";
+	}
+	
+	@RequestMapping("/regist")
+	public String regist(@Validated RegisterBookForm form, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return form();
+		}
+		
+		Book book = new Book();
+		BeanUtils.copyProperties(form, book);
+		
+		//imageFileにformで受け取った画像ファイルを入れる
+		MultipartFile imageFile = form.getImageFile();
+		String filename = imageFile.getOriginalFilename();
+		
+		try {
+			//仮想パスをシステム上の絶対パスに変換
+			String path = application.getRealPath("/img/" + filename);
+			System.out.println(path);
+			//絶対パスにfileを作成
+			File file = new File(path);
+			System.out.println(file);
+			//imageFileを"/img/ファイル名"に転送
+			imageFile.transferTo(file);			
+		}catch(Exception e) {
+			return form();
+		}
+		
+		book.setId(bookService.createId());
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+			book.setSaledate(format.parse(form.getSaledate()));
+		}catch(Exception e){
+			return null;
+		}
+		
+		book.setImage(filename);
+		book = bookService.insert(book);
+		
+		return "redirect:list";
 	}
 
 }
