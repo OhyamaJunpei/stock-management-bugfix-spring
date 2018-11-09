@@ -17,9 +17,9 @@ public class RegisterBookForm {
 	private String publisher;
 	@NotNull(message="価格を入力して下さい")
 	private Integer price;
-	@NotBlank(message="ISBNコードを入力して下さい")
+	@Pattern(regexp = "[0-9]-[0-9] {4}-[0-9] {4}-[0-9]", message="〇-〇〇〇〇-〇〇〇〇-〇と入力してください")
 	private String isbncode;
-	@Pattern(regexp = "[0-9][0-9][0-9][0-9]/[0-1][0-9]/[0-3][0-9]")
+	@Pattern(regexp = "[0-9] {4}/[0-1][0-9]/[0-3][0-9]", message="〇〇〇〇/〇〇/〇〇と入力してください")
 	private String saledate;
 	@NotBlank(message="説明を入力して下さい")
 	private String explanation;
